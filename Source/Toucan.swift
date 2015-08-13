@@ -527,7 +527,18 @@ public class Toucan : NSObject {
                     break
             }
             
-            let context : CGContextRef = CGBitmapContextCreate(nil, CGImageGetWidth(image.CGImage), CGImageGetWidth(image.CGImage),
+            let contextWidth: Int
+            let contextHeight: Int
+            switch (image.imageOrientation) {
+                case .Left, .Right, .LeftMirrored, .RightMirrored:
+                    contextWidth = CGImageGetHeight(image.CGImage)
+                    contextHeight = CGImageGetWidth(image.CGImage)
+                default:
+                    contextWidth = CGImageGetWidth(image.CGImage)
+                    contextHeight = CGImageGetHeight(image.CGImage)
+            }
+
+            let context : CGContextRef = CGBitmapContextCreate(nil, contextWidth, contextHeight,
                 CGImageGetBitsPerComponent(image.CGImage),
                 CGImageGetBytesPerRow(image.CGImage),
                 CGImageGetColorSpace(image.CGImage),
